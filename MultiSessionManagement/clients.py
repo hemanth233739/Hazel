@@ -24,7 +24,7 @@ async def start_all():
       await client.start()
       pytgcalls_client = PyTgCalls(client)
       await pytgcalls_client.start()
-      clients_data[client.me.id] = {"client": client, "pytgcalls_client": pytgcalls_client,"privilege": f"{'sudo' if client == clients[0] else 'user'}"}
+      clients_data[client.me.id] = {"client": client, "StreamingChats": [], "pytgcalls_client": pytgcalls_client,"privilege": f"{'sudo' if client == clients[0] else 'user'}"}
       TgCallsClients.append(pytgcalls_client)
     except: clients.remove(client)
   from Essentials.vars import AutoJoinChats, Support
