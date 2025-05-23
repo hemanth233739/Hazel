@@ -8,3 +8,11 @@ def on_message(filters=None, group=0):
       i.on_message(filters, group=group)(func)
     return func
   return decorator
+  
+def on_update(*args, **kwarg): #PyTgCalls decorator...
+  def decorator(func):
+    from . import TgCallsClients
+    for i in TgCallsClients:
+      i.on_update(*args,**kwargs)(func)
+    return func
+  return decorator
