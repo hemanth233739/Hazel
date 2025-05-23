@@ -36,7 +36,7 @@ async def stop_stream(c,m):
   global clients_data
   if "StreamingChats" not in clients_data[c.me.id]:
     return await m.reply("Nothing streaming in this chat tbh.") 
-  streaming_data = clients_data[c.me.id]["StreamingChats"].get(m.chat.id)
+  streaming_data = clients_data[c.me.id]["StreamingChats"][m.chat.id]
   if not streaming_data:
     return await m.reply("Nothing streaming in this chat tbh.")
   source = streaming_data["source"]
