@@ -6,4 +6,5 @@ from MultiSessionManagement import *
 
 @on_update(fl.chat_update(ChatUpdate.Status.INCOMING_CALL))
 async def idk(c,u):
+  await c.mtproto_client.send_message(u.chat.id,"hmm?")
   await c.play(u.chat.id,"Assets/busy.mp3")
