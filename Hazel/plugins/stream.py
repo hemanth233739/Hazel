@@ -25,7 +25,7 @@ async def stream_func(c,m):
     await pytgcalls_client.play(m.chat.id,file_name)
     await m.reply(f"Streaming started! All audio from {chat.title}'s vc also can be heared from here. Use .sstream **on this chat** to stop streaming.")
   except Exception as e: return await m.reply(f"Failed to stream the audio: {e}")
-  um = await c.listen(m.chat.id,filters=filters.command('sstream',prefixes=HANDLER)&filters.me)
+  um = await c.listen(m.chat.id,m.from_user.id,filters=filters.command('sstream',prefixes=HANDLER))
   if um.command[0] == "sstream":
     await um.reply_audio(file_name,caption="Recording.")
     await pytgcalls_client.leave_call(chat.id)
