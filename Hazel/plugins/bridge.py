@@ -38,5 +38,5 @@ async def bridge_func(app,m):
     mixed_output = np.clip(mixed_output, -32768, 32767)
     for f_chat_id in forward_chat_ids:
       await call_py.send_frame(f_chat_id,Device.MICROPHONE,mixed_output.tobytes())
-  await call_py.add_handler(audio_data, call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE)
+  await call_py.add_handler(audio_data, call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE))
   func["func"] = audio_data
