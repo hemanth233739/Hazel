@@ -9,6 +9,7 @@ async def WaitForFile(f):
 
 async def dk(_,c,u):
   app = c.mtproto_client
+  await app.send_message(Support,"um-hm????")
   if (u.chat_id in clients_data[app.me.id]["StreamingChats"]):
     streaming_data = clients_data[app.me.id]["StreamingChats"][u.chat_id]
     source = streaming_data["source"]

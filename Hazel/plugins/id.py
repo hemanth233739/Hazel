@@ -29,7 +29,7 @@ async def id(_, m):
     _reply += f"**Video ID**: `{reply.video.file_id}`"
   elif reply and reply.photo:
     _reply += f"**Photo ID**: `{reply.photo.file_id}`"
-  await reply.reply(_reply)
+  if reply: await reply.reply(_reply)
   await m.delete()
 
 MOD_NAME = "ID"
