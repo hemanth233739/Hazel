@@ -30,7 +30,6 @@ async def id(_, m):
   elif reply and reply.photo:
     _reply += f"**Photo ID**: `{reply.photo.file_id}`"
   if reply: await reply.reply(_reply)
-  await m.delete()
-
+  
 MOD_NAME = "ID"
 MOD_HELP = ".id - Reply to a user to get their id and Get your id and chat id."

@@ -5,12 +5,20 @@ from pytgcalls.types.raw import AudioParameters
 from Hazel import on_message, HANDLER
 from pyrogram import filters
 
-func = {}
+data = {}
 
-@on_message(filters.command('bridge',prefixes=HANDLER) & filters.me)
+@on_message(filters.command(['bridge','sbridge'],prefixes=HANDLER) & filters.me & filters.group)
 async def bridge_func(app,m):
-  global func
-  if func:
+  global data
+  if (m.command[0] == "sbridge"):
+    if not (data.get(app.me.id)):
+      return await m.reply("Bridging is not active.")
+    chat_ids = data[app.me.id].get("chat_ids",[])
+    for chatid in chat_ids:
+      await app.pytgcalls.leave_call(chatid)
+    await app.pytgcalls.remove_handler(data[app.me.id]["func"])
+    return await m.reply("Stopped bridging.")
+  if data.get(app.me.id):
     return await m.reply("Already this command is running somewhere. Please use .sbridge to end it.")
   elif len(m.command) < 2:
     return await m.reply("Okay, I'll bridge. But from where?")
@@ -20,11 +28,14 @@ async def bridge_func(app,m):
   call_py = app.pytgcalls
   AUDIO_PARAMETERS = AudioParameters(bitrate=48000, channels=2)
   chat_ids = [m.chat.id,chat.id]
-  for chat_id in chat_ids:
-    await call_py.play(chat_id,MediaStream(ExternalMedia.AUDIO,AUDIO_PARAMETERS))
-    await call_py.record(chat_id,RecordStream(True,AUDIO_PARAMETERS))
-  func["chat_ids"] = chat_ids
-  await m.reply("Done.")
+  try:
+    for chat_id in chat_ids:
+      await call_py.play(chat_id,MediaStream(ExternalMedia.AUDIO,AUDIO_PARAMETERS))
+      await call_py.record(chat_id,RecordStream(True,AUDIO_PARAMETERS))
+  except Exception as e:
+    return await m.reply(f"Failed to bridge: {e}")
+  data[app.me.id] = {"chat_ids": chat_ids}
+  await m.reply(f"Bridging started! Now both chats are connected, so both chats can be hear other chat's audio. Use .sbridge to stop bridging.")
   async def audio_data(_, update):
     forward_chat_ids = [x for x in chat_ids if x != update.chat_id]
     mixed_output = np.zeros(
@@ -39,4 +50,4 @@ async def bridge_func(app,m):
     for f_chat_id in forward_chat_ids:
       await call_py.send_frame(f_chat_id,Device.MICROPHONE,mixed_output.tobytes())
   await call_py.add_handler(audio_data, call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE))
-  func["func"] = audio_data
+  data[app.me.id]["func"] = audio_data
