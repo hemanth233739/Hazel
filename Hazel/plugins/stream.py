@@ -8,4 +8,4 @@ import logging
 async def StreamEndHandler(c,u):
   logging.info(u)
 
-TgCallsClients[0].add_handler(StreamEndHandler, call_filters.stream_end())
+TgCallsClients[0].add_handler(StreamEndHandler)
