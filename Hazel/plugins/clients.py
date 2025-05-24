@@ -7,7 +7,7 @@ async def fclients(c, m):
   n=await m.reply("`Processing...`")
   txt="![ℹ️](tg://emoji?id=5318840353510408444) **Clients informations**\n"
   for i in clients:
-    if i.me.id:
+    if i.me:
       d=clients_data.get(i.me.id)
       txt+=f"""
 •![👤](tg://emoji?id=5258011929993026890) - **{i.me.first_name}** (`{i.me.id}`)
