@@ -18,14 +18,14 @@ async def StreamEndHandler(c,u):
       del clients_data[app.me.id]["StreamingChats"][u.chat_id]
       try: await c.leave_call(source),await c.leave_call(u.chat_id)
       except:pass
-      return
+      return await app.send_message(u.chat.id,"Stream ended. Because streaming file is missing.")
     await aiofiles.os.remove(file_name)
     await c.record(source, file_name)
     await WaitForFile(file_name)
     try:
       await c.play(u.chat_id, file_name)
     except Exception as e:
-      await m.reply(f"Failed to re-stream the audio: {e}")
+      await app.send_message(u.chat.id,f"Failed to re-stream the audio: {e}")
       del clients_data[app.me.id]["StreamingChats"][u.chat_id]
       if await aiofiles.os.path.exists(file_name): await aiofiles.os.remove(file_name)
       await c.leave_call(source),await c.leave_call(u.chat_id)
