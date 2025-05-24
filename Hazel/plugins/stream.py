@@ -8,7 +8,4 @@ import logging
 async def StreamEndHandler(c,u):
   await c.mtproto_client.send_message('me',u)
 
-c = PyTgCalls(clients[0])
-
-c.add_handler(StreamEndHandler)
-c.start()
+#c.add_handler(StreamEndHandler)
