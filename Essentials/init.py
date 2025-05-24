@@ -38,7 +38,7 @@ class Init:
     for k in OtherKeys:
       data[k] = config.get(k)
       if k == "OtherSessions":
-        data[k] = ast.literal_eval(os.getenv(k) or list(config.get(k)) or "None")
+        data[k] = config.get(k,[]) or ast.literal_eval(os.getenv(k) or "None")
         if not isinstance(data[k], list): data[k]=[]
     try:
       if not (config.get('quick_start')):
