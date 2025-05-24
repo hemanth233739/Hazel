@@ -7,7 +7,7 @@ from pytgcalls import filters as call_filters
 async def WaitForFile(f):
   return await aiofiles.os.path.exists(f) or await asyncio.sleep(0.01) or await WaitForFile(f)
 
-async def dk(_,c,u):
+async def StreamEndHandler(c,u):
   app = c.mtproto_client
   await app.send_message(Support,"um-hm????")
   if (u.chat_id in clients_data[app.me.id]["StreamingChats"]):
@@ -30,9 +30,7 @@ async def dk(_,c,u):
       if await aiofiles.os.path.exists(file_name): await aiofiles.os.remove(file_name)
       await c.leave_call(source),await c.leave_call(u.chat_id)
 
-@on_update(call_filters.stream_end() & call_filters.create(dk))
-async def StreamEndHandler(c,u):
-  pass
+TgCallsClients[0].add_handler(StreamEndHandler, call_filters.stream_end())
 
 @on_message(filters.command('stream', prefixes=HANDLER) & filters.me)
 async def stream_func(c,m):
