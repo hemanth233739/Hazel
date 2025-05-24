@@ -26,7 +26,7 @@ async def start_all():
       pytgcalls_client = PyTgCalls(client)
       client.privilege, client.pytgcalls = privilege, pytgcalls_client
       await pytgcalls_client.start()
-      clients_data[client.me.id] = {"client": client}
+      clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
       TgCallsClients.append(pytgcalls_client)
     except: clients.remove(client)
   from Essentials.vars import AutoJoinChats, Support

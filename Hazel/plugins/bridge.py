@@ -6,6 +6,7 @@ from Hazel import on_message, HANDLER
 from pyrogram import filters
 
 func = {}
+
 @on_message(filters.command('bridge',prefixes=HANDLER) & filters.me)
 async def bridge_func(app,m):
   global func

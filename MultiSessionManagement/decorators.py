@@ -9,10 +9,3 @@ def on_message(filters=None, group=0):
     return func
   return decorator
   
-def on_update(*args): #PyTgCalls decorator...
-  def decorator(func):
-    from . import TgCallsClients
-    for i in TgCallsClients:
-      i.on_update(*args)(func)
-    return func
-  return decorator
