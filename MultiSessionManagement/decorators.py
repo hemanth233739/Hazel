@@ -11,6 +11,6 @@ def on_update(*args):
   def decorator(func):
     from . import TgCallsClients
     for i in TgCallsClients:
-      i.on_message(*args)(func)
+      i.on_update(*args)(func)
     return func
   return decorator  
