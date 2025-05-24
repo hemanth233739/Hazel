@@ -1,3 +1,4 @@
 git add *
-git commit -m "Update. (i miss her tbh.)"
+read -p "Commit message: " message
+git commit -m "$message"
 git push origin main
