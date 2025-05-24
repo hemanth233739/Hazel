@@ -38,7 +38,7 @@ class Init:
     for k in OtherKeys:
       data[k] = config.get(k)
       if k == "OtherSessions":
-        data[k] = config.get(k,[]) or ast.literal_eval(os.getenv(k) or "None")
+        data[k] = config.get(k,[]) or ast.literal_eval(os.getenv(k) or [])
         if not isinstance(data[k], list): data[k]=[]
     try:
       if not (config.get('quick_start')):
@@ -64,5 +64,5 @@ class Init:
       "BOT_TOKEN": data['BOT_TOKEN'],
       "OtherSessions": data.get('OtherSessions')
     }
-    if len(data.get('OtherSessions')) > 5:
-      raise ValueError("You cannot add more than 5 sessions.")
+    if len(data.get('OtherSessions')) > 7:
+      raise ValueError("You cannot add more than 7 sessions.")
