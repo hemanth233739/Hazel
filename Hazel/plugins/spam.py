@@ -1,5 +1,6 @@
 from .. import *
 from pyrogram import filters
+import asyncio
 
 data = {}
 
