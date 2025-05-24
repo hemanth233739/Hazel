@@ -11,9 +11,11 @@ clients, clients_data = [],{}
 TgCallsClients = []
 
 def add_client(client):
-  global clients,clients_data
+  global clients,TgCallsClients
   if client not in clients:
     clients.append(client)
+    client.pytgcalls = PyTgCalls(client)
+    TgCallsClients.append(client.pytgcalls)
 
 async def start_all():
   global clients_data,TgCallsClients
@@ -23,11 +25,9 @@ async def start_all():
   for client in clients:
     privilege = f"{'sudo' if client == clients[0] else 'user'}"
     await client.start()
-    pytgcalls_client = PyTgCalls(client)
-    await pytgcalls_client.start()
-    client.privilege, client.pytgcalls = privilege, pytgcalls_client      
-    clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
-    TgCallsClients.append(pytgcalls_client)
+    await client.pytgcalls.start()
+    client.privilege = privilege      
+    clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": client.pytgcalls,"privilege": privilege}
   from Essentials.vars import AutoJoinChats, Support
   for app in clients:
     for i in AutoJoinChats:
