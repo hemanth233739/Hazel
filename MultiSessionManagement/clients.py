@@ -21,17 +21,13 @@ async def start_all():
   await bot.start()
   await nexbot.start()
   for client in clients:
-    try:
-      privilege = f"{'sudo' if client == clients[0] else 'user'}"
-      await client.start()
-      pytgcalls_client = PyTgCalls(client)
-      await pytgcalls_client.start()
-      client.privilege, client.pytgcalls = privilege, pytgcalls_client      
-      clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
-      TgCallsClients.append(pytgcalls_client)
-    except Exception as e:
-      clients.remove(client)
-      log.error(e)
+    privilege = f"{'sudo' if client == clients[0] else 'user'}"
+    await client.start()
+    pytgcalls_client = PyTgCalls(client)
+    await pytgcalls_client.start()
+    client.privilege, client.pytgcalls = privilege, pytgcalls_client      
+    clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
+    TgCallsClients.append(pytgcalls_client)
   from Essentials.vars import AutoJoinChats, Support
   for app in clients:
     for i in AutoJoinChats:

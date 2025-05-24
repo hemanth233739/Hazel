@@ -46,10 +46,10 @@ class Init:
         for key in DefaultKeys:
           print(f"{key}: {repr(data[key])}")
         confirm = input("Are these correct? (y/n): ").strip().lower()
-      else: confirm='y'
+      else: confirm = 'y'
     except EOFError:
       log.info("EOF detected. Continuing with y.")
-      confirm="y"
+      confirm = "y"
     if confirm != "y":
       for key in DefaultKeys:
         try:
