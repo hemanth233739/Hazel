@@ -1,5 +1,4 @@
-import os
-import sys
+import os,sys
 
 def restart():
-  os.execv(sys.executable, [sys.executable] + sys.argv)
+  os.execv(sys.executable,[sys.executable]+sys.argv)
