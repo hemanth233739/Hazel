@@ -25,7 +25,7 @@ async def bridge_func(app,m):
     await call_py.record(chat_id,RecordStream(True,AUDIO_PARAMETERS))
   func["chat_ids"] = chat_ids
   await m.reply("Done.")
-  async def audio_data(_: PyTgCalls, update: StreamFrames):
+  async def audio_data(_, update):
     forward_chat_ids = [x for x in chat_ids if x != update.chat_id]
     mixed_output = np.zeros(
       len(update.frames[0].frame) // 2,
