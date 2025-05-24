@@ -38,5 +38,5 @@ MOD_NAME = "Spam"
 MOD_HELP = """.spam <text> - To spam the text or reply to a message to spam it.
 .sspam - To stop the ongoing spam.
 .slspam - Slow spam 2.5 sec delay for each.
-.dspam - Same as slspam or (slow spam), but it delete's the spam message. used in chatfight rank boosting.
+.dspam - Same as slspam or (slow spam), but it delete's the spam message. used in chatfight bot's rank boosting.
 """

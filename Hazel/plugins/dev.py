@@ -28,7 +28,7 @@ async def aexec(code, client, msg):
 
 @on_message(filters.command(["e", "eval"],prefixes=HANDLER) & filters.me)
 async def eval_func(c, msg):
-  if (clients_data[c.me.id].get('privilege')!='sudo'):
+  if (c.privilege!='sudo'):
     return await msg.reply("You don't have permisson.")
   cmd = msg.text.split(None, 1)
   if len(cmd) == 1:
@@ -57,7 +57,7 @@ async def eval_func(c, msg):
 
 @on_message(filters.command(["sh", "shell"], prefixes=HANDLER) & filters.me)
 async def shell(c, message):
-  if (clients_data[c.me.id].get('privilege')!='sudo'):
+  if (c.privilege!='sudo'):
     return await msg.reply("You don't have permisson.")
   if len(message.command) < 2:
     return await message.reply("Please enter a command to run!")
@@ -85,7 +85,7 @@ async def shell(c, message):
 
 @on_message(filters.command(["log", "logs", "flog", "flogs"], prefixes=HANDLER) & filters.me)
 async def log(c, m):
-  if (clients_data[c.me.id].get('privilege')!='sudo'):
+  if (c.privilege!='sudo'):
     return await m.reply("You don't have permisson.")
   x = await m.reply("Processing...")
   async with aiofiles.open("log.txt", mode="r") as l:
@@ -97,7 +97,7 @@ async def log(c, m):
 
 @on_message(filters.command("restart", prefixes=HANDLER) & filters.me)
 async def restart_func(c, message):
-  if (clients_data[c.me.id].get('privilege')!='sudo'):
+  if (c.privilege!='sudo'):
     return await message.reply("You don't have permisson.")  
   await message.reply("Restarting...")
   from restart import restart

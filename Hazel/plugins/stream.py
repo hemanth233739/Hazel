@@ -1,7 +1,7 @@
-from .. import *
+from .. import on_message,HANDLER
 from pyrogram import *
 import asyncio, aiofiles.os
-from MultiSessionManagement import *
+from MultiSessionManagement import clients_data,TgCallsClients,clients
 from pytgcalls import filters as call_filters
 
 async def WaitForFile(f):
@@ -32,7 +32,7 @@ async def StreamEndHandler(c,u):
 
 #TgCallsClients[0].add_handler(StreamEndHandler, call_filters.stream_end())
 
-@on_message(filters.command('stream', prefixes=HANDLER) & filters.me)
+@on_message(filters.command('stream',prefixes=HANDLER) & filters.me)
 async def stream_func(c,m):
   global clients_data
   if m.chat.id in clients_data[c.me.id]["StreamingChats"]:

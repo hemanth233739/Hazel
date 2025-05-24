@@ -75,7 +75,7 @@ async def ban_func(c,m)->None:
       if (m.command[0] == 'kick'): await c.unban_chat_member(here,victim)
       return await m.reply("Banned." if m.command[0] == 'ban' else "Kicked.")
     except:
-      if c.me.id == app.me.id:
+      if c.privilege == "sudo":
         for cl in clients:
           try:
             await cl.ban_chat_member(here,victim)
@@ -88,7 +88,7 @@ async def ban_func(c,m)->None:
       await c.unban_chat_member(here,victim)
       return await m.reply("Unbanned.")
     except:
-      if c.me.id == app.me.id:
+      if c.privilege == "sudo":
         for cl in clients:
           try:
             await cl.unban_chat_member(here,victim)
@@ -103,7 +103,7 @@ MOD_HELP = """**⚕️ Banall**
 .kickall - To kick all members from a group.
 
 **🥀 Normal-Ban**
-.ban <Reply/id> - To ban them.
-.kick <Reply/id> - To kick them.
-.unban <Reply/id> - To unban them.
-**💡 LMAO:** Don't try to test this and destroy your group!"""
+.ban <reply/id> - To ban them.
+.kick <reply/id> - To kick them.
+.unban <reply/id> - To unban them.
+**💡 LMAO:** Don't try to test this and destroy your own group!"""

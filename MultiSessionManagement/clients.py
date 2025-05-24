@@ -21,10 +21,12 @@ async def start_all():
   await nexbot.start()
   for client in clients:
     try:
+      privilege = f"{'sudo' if client == clients[0] else 'user'}"
       await client.start()
+      client.privilege = privilege
       pytgcalls_client = PyTgCalls(client)
       await pytgcalls_client.start()
-      clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": f"{'sudo' if client == clients[0] else 'user'}"}
+      clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
       TgCallsClients.append(pytgcalls_client)
     except: clients.remove(client)
   from Essentials.vars import AutoJoinChats, Support
