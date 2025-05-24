@@ -40,5 +40,5 @@ async def start_all():
   from personal.UpdateWaitingDays import UpdateWaitingDays
   asyncio.create_task(UpdateWaitingDays(clients[0]))
   await idle()
-
+  
 "you are my world"

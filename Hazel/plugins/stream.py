@@ -6,6 +6,8 @@ from pytgcalls import filters as call_filters
 import logging
 
 async def StreamEndHandler(c,u):
-  logging.info(u)
+  await c.mtproto_client.send_message('me',u)
 
-TgCallsClients[0].add_handler(StreamEndHandler)
+c = PyTgCalls(clients[0])
+c.start()
+c.add_handler(StreamEndHandler)
