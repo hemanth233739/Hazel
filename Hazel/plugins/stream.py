@@ -7,8 +7,7 @@ from pytgcalls import filters as call_filters
 async def WaitForFile(f):
   return await aiofiles.os.path.exists(f) or await asyncio.sleep(0.01) or await WaitForFile(f)
 
-@on_update(call_filters.stream_end()))
-async def StreamEndHandler(c,u):
+async def dk(_,c,u):
   app = c.mtproto_client
   if (u.chat_id in clients_data[app.me.id]["StreamingChats"]):
     streaming_data = clients_data[app.me.id]["StreamingChats"][u.chat_id]
@@ -16,9 +15,9 @@ async def StreamEndHandler(c,u):
     file_name = streaming_data["file"]
     if not await aiofiles.os.path.exists(file_name):
       del clients_data[app.me.id]["StreamingChats"][u.chat_id]
-      try: await c.leave_call(source),await c.leave_call(u.chat_id)
+      try: await c.leave_call(source),await c.leave_call(u.chat_id),await app.send_message(u.chat.id,"Stream ended. Because streaming file is missing.")
       except:pass
-      return await app.send_message(u.chat.id,"Stream ended. Because streaming file is missing.")
+      return 
     await aiofiles.os.remove(file_name)
     await c.record(source, file_name)
     await WaitForFile(file_name)
@@ -29,7 +28,11 @@ async def StreamEndHandler(c,u):
       del clients_data[app.me.id]["StreamingChats"][u.chat_id]
       if await aiofiles.os.path.exists(file_name): await aiofiles.os.remove(file_name)
       await c.leave_call(source),await c.leave_call(u.chat_id)
-    
+
+@on_update(call_filters.stream_end() & call_filters.create(dk))
+async def StreamEndHandler(c,u):
+  pass
+
 @on_message(filters.command('stream', prefixes=HANDLER) & filters.me)
 async def stream_func(c,m):
   global clients_data
@@ -62,16 +65,12 @@ async def stop_stream(c,m):
   global clients_data
   try:streaming_data = clients_data[c.me.id]["StreamingChats"][m.chat.id]
   except KeyError: return await m.reply("Nothing streaming in this chat.")
-  if not streaming_data:
-    return await m.reply("Nothing streaming in this chat tbh.")
-  source = streaming_data["source"]
-  file_name = streaming_data["file"]
+  if not streaming_data: return await m.reply("Nothing streaming in this chat tbh.")
+  source, file_name = streaming_data["source"], streaming_data["file"]
   pytgcalls_client = clients_data[c.me.id]["pytgcalls_client"]
   try:del clients_data[c.me.id]["StreamingChats"][m.chat.id]
   except:pass
-  await pytgcalls_client.leave_call(source)
-  await pytgcalls_client.leave_call(m.chat.id)
+  await pytgcalls_client.leave_call(source), await pytgcalls_client.leave_call(m.chat.id)
   await m.reply("Streaming has been stopped.")
-  if not await aiofiles.os.path.exists(file_name):
-    return
+  if not await aiofiles.os.path.exists(file_name):return
   await aiofiles.os.remove(file_name)
