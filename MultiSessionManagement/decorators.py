@@ -1,5 +1,4 @@
 from pyrogram import *
-"""I love her. Tbh"""
 
 def on_message(filters=None, group=0):
   def decorator(func):
@@ -9,3 +8,10 @@ def on_message(filters=None, group=0):
     return func
   return decorator
   
+def on_update(*args):
+  def decorator(func):
+    from . import clients
+    for i in TgCallsClients:
+      i.on_message(*args)(func)
+    return func
+  return decorator  
