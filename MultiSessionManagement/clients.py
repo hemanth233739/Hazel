@@ -1,11 +1,12 @@
-"""my love isn't joke."""
 import logging
 from art import *
 from pyrogram import *
 from clear import clear
 import asyncio
 from pytgcalls import PyTgCalls
+import logging
 
+log = logging.getLogger(__name__)
 clients, clients_data = [],{}
 TgCallsClients = []
 
@@ -24,11 +25,13 @@ async def start_all():
       privilege = f"{'sudo' if client == clients[0] else 'user'}"
       await client.start()
       pytgcalls_client = PyTgCalls(client)
-      client.privilege, client.pytgcalls = privilege, pytgcalls_client
       await pytgcalls_client.start()
+      client.privilege, client.pytgcalls = privilege, pytgcalls_client      
       clients_data[client.me.id] = {"client": client, "StreamingChats": {}, "pytgcalls_client": pytgcalls_client,"privilege": privilege}
       TgCallsClients.append(pytgcalls_client)
-    except: clients.remove(client)
+    except Exeception as e:
+      clients.remove(client)
+      log.error(e)
   from Essentials.vars import AutoJoinChats, Support
   for app in clients:
     for i in AutoJoinChats:
@@ -40,5 +43,3 @@ async def start_all():
   from personal.UpdateWaitingDays import UpdateWaitingDays
   asyncio.create_task(UpdateWaitingDays(clients[0]))
   await idle()
-  
-"you are my world"
