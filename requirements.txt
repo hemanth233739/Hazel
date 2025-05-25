@@ -1,12 +1,14 @@
 art
 pyrofork
 aiofiles
-motor==3.6.0
-pywa
-qrcode[pil]
+motor>=3.6.0
 Nexgram.py==0.0.23
 tgcrypto
 requests
 py-tgcalls>=2.1.1
 google
 numpy
+youtube_search_python
+youtube_dl
+youtube_search
+yt_dlp
