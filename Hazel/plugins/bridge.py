@@ -16,7 +16,7 @@ async def bridge_func(app,m):
     chat_ids = data[app.me.id].get("chat_ids",[])
     for chatid in chat_ids:
       await app.pytgcalls.leave_call(chatid)
-    await app.pytgcalls.remove_handler(data[app.me.id].get("func"))
+    await app.pytgcalls.remove_handler((data[app.me.id].get("func")))
     return await m.reply("Stopped bridging.")
   if data.get(app.me.id):
     return await m.reply("Already this command is running somewhere. Please use .sbridge to end it.")
