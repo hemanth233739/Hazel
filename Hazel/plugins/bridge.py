@@ -16,7 +16,6 @@ async def bridge_func(app,m):
     chat_ids = data[app.me.id].get("chat_ids",[])
     for chatid in chat_ids:
       await app.pytgcalls.leave_call(chatid)
-    await app.pytgcalls.remove_handler((data[app.me.id].get("func")))
     return await m.reply("Stopped bridging.")
   if data.get(app.me.id):
     return await m.reply("Already this command is running somewhere. Please use .sbridge to end it.")
@@ -36,7 +35,12 @@ async def bridge_func(app,m):
     return await m.reply(f"Failed to bridge: {e}")
   data[app.me.id] = {"chat_ids": chat_ids}
   await m.reply(f"Bridging started! Now both chats are connected, so both chats can be hear other chat's audio. Use .sbridge to stop bridging.")
-  async def audio_data(_, update):
+  
+@on_update(call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE))
+async def audio_data(call_py, update):
+  app = call_py.mtproto_client
+  if (app.me.id in data and update.chat_id in data[app.me.id]["chat_ids"]):
+    chat_ids = data[app.me.id]["chat_ids"]
     forward_chat_ids = [x for x in chat_ids if x != update.chat_id]
     mixed_output = np.zeros(
       len(update.frames[0].frame) // 2,
@@ -49,5 +53,3 @@ async def bridge_func(app,m):
     mixed_output = np.clip(mixed_output, -32768, 32767)
     for f_chat_id in forward_chat_ids:
       await call_py.send_frame(f_chat_id,Device.MICROPHONE,mixed_output.tobytes())
-  await call_py.add_handler((audio_data), call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE))
-  data[app.me.id]["func"] = audio_data
