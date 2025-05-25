@@ -2,7 +2,7 @@ import numpy as np
 from pytgcalls import filters as call_filter
 from pytgcalls.types import Device, Direction, ExternalMedia, RecordStream, MediaStream, StreamFrames
 from pytgcalls.types.raw import AudioParameters
-from Hazel import on_message, HANDLER
+from Hazel import on_message, HANDLER, on_update
 from pyrogram import filters
 
 data = {}
