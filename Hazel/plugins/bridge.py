@@ -7,7 +7,7 @@ from pyrogram import filters
 
 data = {}
 
-@on_message(filters.command(['bridge','sbridge'],prefixes=HANDLER) & filters.me & filters.group)
+@on_message(filters.command(['bridge','sbridge'],prefixes=HANDLER) & filters.me)
 async def bridge_func(app,m):
   global data
   if (m.command[0] == "sbridge"):
@@ -16,6 +16,7 @@ async def bridge_func(app,m):
     chat_ids = data[app.me.id].get("chat_ids",[])
     for chatid in chat_ids:
       await app.pytgcalls.leave_call(chatid)
+    del data[app.me.id]
     return await m.reply("Stopped bridging.")
   if data.get(app.me.id):
     return await m.reply("Already this command is running somewhere. Please use .sbridge to end it.")
@@ -34,7 +35,7 @@ async def bridge_func(app,m):
   except Exception as e:
     return await m.reply(f"Failed to bridge: {e}")
   data[app.me.id] = {"chat_ids": chat_ids}
-  await m.reply(f"Bridging started! Now both chats are connected, so both chats can be hear other chat's audio. Use .sbridge to stop bridging.")
+  await m.reply(f"Bridging started! Now both chats are connected, so both chats can hear other chat's audio. Use .sbridge to stop bridging.")
   
 @on_update(call_filter.stream_frame(Direction.INCOMING,Device.MICROPHONE))
 async def audio_data(call_py, update):
@@ -53,3 +54,6 @@ async def audio_data(call_py, update):
     mixed_output = np.clip(mixed_output, -32768, 32767)
     for f_chat_id in forward_chat_ids:
       await call_py.send_frame(f_chat_id,Device.MICROPHONE,mixed_output.tobytes())
+      
+MOD_NAME = "Bridge"      
+MOD_HELP = ".bridge <username/link/id> - To bridge two voice chats."
