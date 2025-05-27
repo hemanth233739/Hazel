@@ -28,7 +28,7 @@ async def add_sudo(c,m):
   elif (clients_data[uid]["client"].privilege == "sudo"):
     return await m.reply("They already has `sudo` privilege.")
   else:
-    clients_data[uid]["client"].privilege = "sudo
+    clients_data[uid]["client"].privilege = "sudo"
     return await m.reply("Promoted.")
     
 @app.on_message(filters.command('rsudo',prefixes=HANDLER) & filters.me)
