@@ -21,26 +21,26 @@ async def fclients(c, m):
 async def add_sudo(c,m):
   if not m.reply_to_message:
     if len(m.command) < 2: return await m.reply("Reply or enter id.")
-    id = int(m.text.split(None, 1)[1])
-  else: id = m.reply_to_message.from_user.id
-  if id not in clients_data:
+    uid = int(m.text.split(None, 1)[1])
+  else: uid = m.reply_to_message.from_user.id
+  if uid not in clients_data:
     return await m.reply("Client not found. You should add their session in OtherSessions in config.json or env.")
-  elif (clients_data[id].get('privilege') == "sudo"):
+  elif (clients_data[uid]["client"].privilege == "sudo"):
     return await m.reply("They already has `sudo` privilege.")
   else:
-    clients_data[id]["privilege"]="sudo"
+    clients_data[uid]["client"].privilege = "sudo
     return await m.reply("Promoted.")
     
 @app.on_message(filters.command('rsudo',prefixes=HANDLER) & filters.me)
 async def remove_sudo(c,m):
   if not m.reply_to_message:
     if len(m.command) < 2: return await m.reply("Reply or enter id.")
-    id = int(m.text.split(None, 1)[1])
-  else: id = m.reply_to_message.from_user.id
-  if id not in clients_data:
+    uid = int(m.text.split(None, 1)[1])
+  else: uid = m.reply_to_message.from_user.id
+  if uid not in clients_data:
     return await m.reply("Client not found. You should add their session in OtherSessions in config.json or env.")
-  elif (clients_data[id].get('privilege') != "sudo"):
+  elif (clients_data[uid]["client"].privilege != "sudo"):
     return await m.reply("They already don't have `sudo` privilege.")
   else:
-    clients_data[id]["privilege"]="user"
+    clients_data[uid]["client"].privilege = "user"
     return await m.reply("Demoted.")
